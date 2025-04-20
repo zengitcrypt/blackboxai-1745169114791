@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOTINU Staking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a1929;
+            background-image: radial-gradient(circle at top right, rgba(1, 65, 255, 0.03), transparent),
+                             radial-gradient(circle at bottom left, rgba(1, 65, 255, 0.03), transparent);
+        }
+        .stat-card {
+            background: rgba(13, 25, 48, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .gradient-button {
+            background: linear-gradient(90deg, #FF6B2C 0%, #FF9F2C 100%);
+        }
+        .harvest-button {
+            background: linear-gradient(90deg, #2C8EFF 0%, #2CBAFF 100%);
+        }
+        .withdraw-button {
+            background: linear-gradient(90deg, #FF2C2C 0%, #FF5C2C 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 text-white">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-12">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <svg class="w-12 h-12 text-white" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z"/>
+                    </svg>
+                </div>
+                <h1 class="text-4xl font-bold text-yellow-400">LOTINU STAKING</h1>
+            </div>
+            <button id="connectWallet" class="gradient-button px-6 py-3 rounded-full font-semibold text-white hover:opacity-90 transition">
+                Connect Wallet
+            </button>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="stat-card rounded-2xl p-6 flex items-center gap-4">
+                <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg text-gray-400">Total Staked</h3>
+                    <p class="text-2xl font-bold" data-stat="totalStaked">--</p>
+                </div>
+            </div>
+
+            <div class="stat-card rounded-2xl p-6 flex items-center gap-4">
+                <div class="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg text-gray-400">APY</h3>
+                    <p class="text-2xl font-bold" data-stat="apy">--</p>
+                </div>
+            </div>
+
+            <div class="stat-card rounded-2xl p-6 flex items-center gap-4">
+                <div class="w-12 h-12 bg-red-400 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clip-rule="evenodd"/>
+                        <path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg text-gray-400">Unclaimed Treats</h3>
+                    <p class="text-2xl font-bold" data-stat="earned">--</p>
+                </div>
+            </div>
+
+            <div class="stat-card rounded-2xl p-6 flex items-center gap-4">
+                <div class="w-12 h-12 bg-purple-400 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg text-gray-400">Bone Lock Timer</h3>
+                    <p class="text-2xl font-bold" data-stat="lockTimer">--</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Staking Interface -->
+        <div class="stat-card rounded-2xl p-6">
+            <div class="mb-6">
+                <input type="number" placeholder="Enter amount to stake" class="w-full bg-transparent border border-gray-700 rounded-lg p-4 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button class="gradient-button w-full py-4 rounded-lg font-semibold hover:opacity-90 transition">
+                    Approve
+                </button>
+                <button class="harvest-button w-full py-4 rounded-lg font-semibold hover:opacity-90 transition">
+                    Harvest
+                </button>
+                <button class="withdraw-button w-full py-4 rounded-lg font-semibold hover:opacity-90 transition">
+                    Withdraw
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
