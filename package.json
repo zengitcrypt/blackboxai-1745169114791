@@ -1,0 +1,33 @@
+{
+  "name": "lotinu-staking",
+  "version": "1.0.0",
+  "description": "LOTINU Token Staking DApp on Binance Smart Chain",
+  "main": "index.js",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "compile": "npx hardhat compile",
+    "deploy:testnet": "npx hardhat run scripts/deploy.js --network bscTestnet",
+    "deploy:mainnet": "npx hardhat run scripts/deploy.js --network bscMainnet",
+    "test": "npx hardhat test"
+  },
+  "keywords": [
+    "blockchain",
+    "defi",
+    "staking",
+    "bsc",
+    "smart-contracts"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-etherscan": "^3.1.7",
+    "@openzeppelin/contracts": "^4.9.3",
+    "@openzeppelin/hardhat-upgrades": "^2.2.1",
+    "chai": "^4.3.7",
+    "dotenv": "^16.3.1",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.17.1"
+  }
+}
